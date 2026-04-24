@@ -1,23 +1,9 @@
 "use strict";
 
 /* ═══════════════════════════════════════════════════════
-   PACT — AI CONTENT GENERATION (Serverless version)
-   -------------------------------------------------------
-   This version calls your Netlify function instead of
-   the Anthropic API directly. Your API key never appears
-   in the browser at all.
-
-   SETUP STEPS:
-   1. Add netlify/functions/generate-hook.js to your project
-   2. Add netlify.toml to your project root
-   3. In the Netlify dashboard → Site settings → Environment
-      variables → add: ANTHROPIC_API_KEY = your key
-   4. Redeploy — done.
-
-   No changes needed to this file or index.html.
+   PACT — AI CONTENT GENERATION (Vercel version)
 ═══════════════════════════════════════════════════════ */
 
-/* ── AI CACHE ──────────────────────────────────────── */
 var AI_CACHE_STORAGE_KEY = "pact.ai_cache";
 
 function getAICache() {
@@ -43,7 +29,6 @@ function getAICachedContent(topic, subject) {
   return getAICache()[buildAICacheKey(topic, subject)] || null;
 }
 
-/* ── TOPIC LIBRARY CHECK ───────────────────────────── */
 function isTopicInLibrary(topic) {
   if (!topic || !topic.trim()) return false;
   var norm = topic.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
@@ -55,10 +40,6 @@ function isTopicInLibrary(topic) {
   });
 }
 
-/* ── PATCH lookupContent ───────────────────────────── */
-// Wraps the original so the session page, thermostat, and challenge
-// question all automatically use AI content once it is cached —
-// no other changes needed anywhere else in script.js.
 (function patchLookupContent() {
   var _original = lookupContent;
   lookupContent = function (topic, subject) {
@@ -68,15 +49,11 @@ function isTopicInLibrary(topic) {
   };
 })();
 
-/* ── AI CONTENT GENERATION ─────────────────────────── */
-// Calls your Netlify function — NOT the Anthropic API directly.
-// The function URL /.netlify/functions/generate-hook is automatic
-// on any Netlify deployment; no configuration needed.
 function generateAIContent(topic, subject, onSuccess, onError) {
   var cached = getAICachedContent(topic, subject);
   if (cached) { onSuccess(cached); return; }
 
-  fetch("/.netlify/functions/generate-hook", {
+  fetch("/api/generate-hook", {   // ← Vercel API route
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ topic: topic, subject: subject })
@@ -89,7 +66,6 @@ function generateAIContent(topic, subject, onSuccess, onError) {
     var clean  = text.replace(/```json|```/g, "").trim();
     var parsed = JSON.parse(clean);
 
-    // Safety fallbacks for arrays the thermostat relies on
     if (!Array.isArray(parsed.lowSupport)  || !parsed.lowSupport.length)  parsed.lowSupport  = ["Stay with the next single step.", "One move at a time is enough right now."];
     if (!Array.isArray(parsed.midSupport)  || !parsed.midSupport.length)  parsed.midSupport  = ["Ask what the core idea really is.", "Name the central question in plain words first."];
     if (!Array.isArray(parsed.highSupport) || !parsed.highSupport.length) parsed.highSupport = ["You are in a good state. Keep going.", "Stay quiet and let the work carry you."];
@@ -104,9 +80,6 @@ function generateAIContent(topic, subject, onSuccess, onError) {
   });
 }
 
-/* ── HOOK PAGE ENHANCER ────────────────────────────── */
-// Call this from initHookPage after fallback content is applied.
-// One line to add in script.js — see the instructions below.
 function enhanceHookPageWithAI(els, context, state, fallbackContent) {
   var topic   = context.topic;
   var subject = context.subject;
@@ -119,7 +92,6 @@ function enhanceHookPageWithAI(els, context, state, fallbackContent) {
     return;
   }
 
-  // Show a gentle loading state while the function runs
   els.title.textContent            = "Finding what makes " + topic + " worth approaching\u2026";
   els.shortText.textContent        = "One moment while the warm-up takes shape.";
   els.longText.textContent         = "";
