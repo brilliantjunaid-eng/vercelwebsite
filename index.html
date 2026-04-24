@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pact — Begin Before You're Ready</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0c0b09;
+      --bg-card:   #131210;
+      --bg-line:   #1e1c19;
+      --cream:     #e4dccf;
+      --cream-dim: #9e9484;
+      --gold:      #c4a267;
+      --gold-dim:  #7a6240;
+      --white:     #f5f0e8;
+      --serif:     'Cormorant Garamond', Georgia, serif;
+      --sans:      'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(12,11,9,0.95) 0%, transparent 100%);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--cream); }
+
+    .nav-cta {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border: 1px solid var(--gold-dim);
+      padding: 0.5rem 1.25rem;
+      transition: all 0.3s;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold);
+      color: var(--bg);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 3rem 6rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 7vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      max-width: 900px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.4s forwards;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      margin-top: 2.5rem;
+      font-size: 1.05rem;
+      color: var(--cream-dim);
+      max-width: 560px;
+      line-height: 1.75;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.6s forwards;
+    }
+
+    .hero-actions {
+      margin-top: 3.5rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--bg);
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.95rem 2.25rem;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: var(--white);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s;
+    }
+
+    .btn-ghost:hover { color: var(--cream); }
+    .btn-ghost::after { content: '→'; font-style: normal; }
+
+    .hero-quote {
+      margin-top: 5rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--bg-line);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--cream-dim);
+      opacity: 0;
+      animation: fadeUp 0.9s 1s forwards;
+    }
+
+    .hero-quote cite {
+      display: block;
+      font-style: normal;
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-top: 0.75rem;
+    }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      padding: 7rem 3rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--white);
+      max-width: 700px;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .section-body {
+      font-size: 1.02rem;
+      color: var(--cream-dim);
+      max-width: 560px;
+      margin-top: 1.75rem;
+      line-height: 1.8;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--bg-line);
+    }
+
+    /* ─── THE PROBLEM ─── */
+    .problem {
+      background: var(--bg);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 4rem;
+    }
+
+    .problem-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .stat-item {
+      border-left: 1px solid var(--bg-line);
+      padding-left: 2rem;
+    }
+
+    .stat-number {
+      font-family: var(--serif);
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--cream-dim);
+      margin-top: 0.4rem;
+      letter-spacing: 0.03em;
+    }
+
+    .problem-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .problem-text p {
+      font-size: 1.05rem;
+      color: var(--cream-dim);
+      line-height: 1.8;
+    }
+
+    .problem-text p strong {
+      color: var(--cream);
+      font-weight: 400;
+    }
+
+    /* ─── HOOK DEMO ─── */
+    .hook-section {
+      background: var(--bg-card);
+    }
+
+    .hook-display {
+      margin-top: 3.5rem;
+      position: relative;
+    }
+
+    .hook-card {
+      border: 1px solid var(--bg-line);
+      padding: 3rem;
+      background: var(--bg);
+      max-width: 700px;
+      position: relative;
+    }
+
+    .hook-card::before {
+      content: '"';
+      font-family: var(--serif);
+      font-size: 8rem;
+      color: var(--gold-dim);
+      opacity: 0.3;
+      position: absolute;
+      top: -1rem;
+      left: 2rem;
+      line-height: 1;
+    }
+
+    .hook-subject {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .hook-text {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--white);
+      font-style: italic;
+    }
+
+    .hook-nav {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .hook-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--bg-line);
+      cursor: pointer;
+      transition: background 0.3s;
+      border: none;
+      outline: none;
+    }
+
+    .hook-dot.active {
+      background: var(--gold);
+    }
+
+    .hook-aside {
+      margin-top: 2.5rem;
+      max-width: 500px;
+    }
+
+    .hook-aside p {
+      font-size: 0.9rem;
+      color: var(--cream-dim);
+      line-height: 1.75;
+    }
+
+    /* ─── THE LOOP ─── */
+    .loop-steps {
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--bg-line);
+      align-items: start;
+      transition: all 0.3s;
+    }
+
+    .step:last-child {
+      border-bottom: 1px solid var(--bg-line);
+    }
+
+    .step-number {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--bg-line);
+      line-height: 1;
+      transition: color 0.3s;
+    }
+
+    .step:hover .step-number {
+      color: var(--gold);
+    }
+
+    .step-content {}
+
+    .step-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.6rem;
+    }
+
+    .step-body {
+      font-size: 0.92rem;
+      color: var(--cream-dim);
+      line-height: 1.75;
+      max-width: 560px;
+    }
+
+    .step-tag {
+      display: inline-block;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      padding: 0.2rem 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    /* ─── THERMOSTAT ─── */
+    .thermostat-section {
+      background: var(--bg-card);
+    }
+
+    .thermostat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      margin-top: 4rem;
+    }
+
+    .thermo-card {
+      background: var(--bg);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thermo-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px;
+      width: 0;
+      transition: width 0.5s;
+    }
+
+    .thermo-card:hover::after { width: 100%; }
+
+    .thermo-low::after   { background: #e07b54; }
+    .thermo-mid::after   { background: var(--gold); }
+    .thermo-high::after  { background: #7db87d; }
+
+    .thermo-range {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .thermo-low .thermo-range   { color: #e07b54; }
+    .thermo-mid .thermo-range   { color: var(--gold); }
+    .thermo-high .thermo-range  { color: #7db87d; }
+
+    .thermo-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+      margin-bottom: 1.25rem;
+    }
+
+    .thermo-response {
+      font-size: 0.92rem;
+      color: var(--cream-dim);
+      line-height: 1.7;
+    }
+
+    .thermo-response strong {
+      color: var(--cream);
+      font-weight: 400;
+    }
+
+    /* ─── GRADUATION ─── */
+    .graduation-section {}
+
+    .grad-arc {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .grad-phases {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .phase {
+      padding: 2rem 0;
+      border-top: 1px solid var(--bg-line);
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .phase:last-child {
+      border-bottom: 1px solid var(--bg-line);
+    }
+
+    .phase-time {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding-top: 0.2rem;
+    }
+
+    .phase-title {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+
+    .phase-body {
+      font-size: 0.88rem;
+      color: var(--cream-dim);
+      line-height: 1.7;
+    }
+
+    .grad-philosophy {
+      position: sticky;
+      top: 6rem;
+    }
+
+    .philosophy-card {
+      border: 1px solid var(--bg-line);
+      padding: 3rem;
+    }
+
+    .philosophy-card blockquote {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      line-height: 1.6;
+      font-style: italic;
+      color: var(--cream);
+      margin-bottom: 1.5rem;
+    }
+
+    .philosophy-card p {
+      font-size: 0.88rem;
+      color: var(--cream-dim);
+      line-height: 1.7;
+    }
+
+    .philosophy-card .card-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── SCIENCE ─── */
+    .science-section {
+      background: var(--bg-card);
+    }
+
+    .science-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-top: 4rem;
+    }
+
+    .science-item {}
+
+    .sci-source {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .sci-title {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+      line-height: 1.35;
+    }
+
+    .sci-body {
+      font-size: 0.88rem;
+      color: var(--cream-dim);
+      line-height: 1.75;
+    }
+
+    /* ─── NOT THIS ─── */
+    .not-section {}
+
+    .not-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      margin-top: 4rem;
+      background: var(--bg-line);
+    }
+
+    .not-item {
+      background: var(--bg);
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .not-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+      text-decoration: line-through;
+      text-decoration-color: var(--gold-dim);
+    }
+
+    .not-reason {
+      font-size: 0.9rem;
+      color: var(--cream-dim);
+      line-height: 1.6;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      background: var(--bg-card);
+      text-align: center;
+    }
+
+    .cta-section .section-label {
+      justify-content: center;
+    }
+
+    .cta-section .section-label::before { display: none; }
+
+    .cta-title {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.12;
+      color: var(--white);
+      max-width: 680px;
+      margin: 0 auto 2rem;
+    }
+
+    .cta-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .cta-sub {
+      font-size: 1rem;
+      color: var(--cream-dim);
+      max-width: 440px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+
+    .cta-form {
+      display: flex;
+      gap: 0;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .cta-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--bg-line);
+      border-right: none;
+      color: var(--cream);
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      padding: 0.85rem 1.25rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .cta-input:focus {
+      border-color: var(--gold-dim);
+    }
+
+    .cta-input::placeholder { color: var(--cream-dim); opacity: 0.5; }
+
+    .cta-submit {
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.85rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .cta-submit:hover { background: var(--white); }
+
+    .cta-note {
+      font-size: 0.72rem;
+      color: var(--cream-dim);
+      opacity: 0.5;
+      margin-top: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 3rem;
+      border-top: 1px solid var(--bg-line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--cream-dim);
+    }
+
+    .footer-line {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--cream-dim);
+      opacity: 0.4;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+
+      section { padding: 5rem 1.5rem; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+
+      .problem-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .thermostat-grid { grid-template-columns: 1fr; gap: 1px; }
+      .science-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .not-grid { grid-template-columns: 1fr; }
+      .grad-arc { grid-template-columns: 1fr; }
+      .grad-philosophy { position: static; }
+
+      .step { grid-template-columns: 50px 1fr; gap: 1.25rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-headline { font-size: 2.6rem; }
+      .cta-form { flex-direction: column; }
+      .cta-input { border-right: 1px solid var(--bg-line); border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ─── -->
+  <nav>
+    <a href="#" class="nav-logo">Pact</a>
+    <ul class="nav-links">
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#science">The science</a></li>
+      <li><a href="#philosophy">Philosophy</a></li>
+    </ul>
+    <a href="/pact.html" class="nav-cta">Begin now</a>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-eyebrow">A student productivity tool</div>
+    <h1 class="hero-headline">
+      The hardest moment<br />is the one <em>before</em><br />you begin.
+    </h1>
+    <p class="hero-sub">
+      Threshold solves starting trouble — not by making studying more rewarding after the fact, but by making your brain want to begin in the first place.
+    </p>
+    <div class="hero-actions">
+      <a href="/pact.html" class="btn-primary">Begin your first session</a>
+      <a href="#how-it-works" class="btn-ghost">See how it works</a>
+    </div>
+    <div class="hero-quote">
+      "One must imagine Sisyphus happy."
+      <cite>— Albert Camus</cite>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── THE PROBLEM ─── -->
+  <section class="problem" id="the-problem">
+    <div class="container">
+      <div class="section-label">The problem</div>
+      <h2 class="section-title">
+        Most apps reward you<br />for finishing. <em>No one</em><br />helps you start.
+      </h2>
+
+      <div class="problem-grid reveal">
+        <div class="problem-stat">
+          <div class="stat-item">
+            <div class="stat-number">73%</div>
+            <div class="stat-label">of students report doomscrolling before study sessions, blunting dopamine before they even open a book.</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">19 min</div>
+            <div class="stat-label">average time a student spends deciding to start studying — before any actual work begins.</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">0</div>
+            <div class="stat-label">productivity apps designed to reduce your reliance on them over time. Until now.</div>
+          </div>
+        </div>
+
+        <div class="problem-text">
+          <p>The phone isn't the enemy. <strong>Depleted dopamine is.</strong> When you scroll for thirty minutes before opening your textbook, you've already spent the neurochemical currency your brain needs to find studying rewarding.</p>
+          <p>Every other productivity app assumes you can already begin. They give you timers, streaks, and checklists — all things that help once you're working. <strong>They have nothing to say to the student staring at the ceiling.</strong></p>
+          <p>Threshold works at the moment before work. It uses curiosity — a scientifically documented precursor to the same dopamine circuits as reward — to create the urge to study before the session even begins.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── CURIOSITY HOOK ─── -->
+  <section class="hook-section" id="how-it-works">
+    <div class="container">
+      <div class="section-label">The curiosity hook</div>
+      <h2 class="section-title reveal">
+        You tell us what you're<br />studying. We show you<br />why it's <em>extraordinary.</em>
+      </h2>
+      <p class="section-body reveal">Before your session begins, Threshold shows you one carefully crafted sentence about your topic. Not a summary. Not a fun fact. The most surprising destination of that subject — glimpsed from the doorway before you walk in.</p>
+
+      <div class="hook-display reveal">
+        <div class="hook-card" id="hookCard">
+          <div class="hook-subject" id="hookSubject">Mathematics — Complex Numbers</div>
+          <div class="hook-text" id="hookText">The equation e<sup>iπ</sup> + 1 = 0 connects five of the most fundamental constants in all of mathematics in a single line — and you're about to learn why that's even possible.</div>
+        </div>
+        <div class="hook-nav" id="hookNav"></div>
+        <div class="hook-aside">
+          <p>The hook doesn't explain itself. It creates <em>anticipatory dopamine</em> — the brain enters a state of wanting to know more before the work even begins. The curiosity is the entry point.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── THE CORE LOOP ─── -->
+  <section id="the-loop">
+    <div class="container">
+      <div class="section-label">The session arc</div>
+      <h2 class="section-title reveal">
+        Every session follows<br />a <em>deliberate</em> shape.
+      </h2>
+
+      <div class="loop-steps">
+        <div class="step reveal">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <div class="step-tag">The Pact</div>
+            <div class="step-title">Set the baseline</div>
+            <div class="step-body">Before anything else, you make a self-promise. What will you avoid this session — no music, no phone, no layering of high-stimulation activities before studying. This is a ritual. It primes the brain consciously before work begins.</div>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <div class="step-tag">Curiosity Hook</div>
+            <div class="step-title">Receive the hook</div>
+            <div class="step-body">Enter your topic. Threshold responds with a single sentence that makes the subject surprising. Not an explanation — an invitation. Your brain begins to want to know, before effort is even required.</div>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <div class="step-tag">Task Queue</div>
+            <div class="step-title">Break the session into tasks</div>
+            <div class="step-body">A simple, minimal task queue. Add what you plan to do in this session. No complexity, no project hierarchy — just enough structure to give the session a shape.</div>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-number">04</div>
+          <div class="step-content">
+            <div class="step-tag">Dopamine Thermostat</div>
+            <div class="step-title">Adaptive check-ins</div>
+            <div class="step-body">Every 25 minutes, a single question: how are you feeling right now, 1–10? One tap. Three seconds. Based on your answer, Threshold adapts — more stimulation when you're low, silence when you're already in flow. It never adds fuel to a fire that's already burning.</div>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-number">05</div>
+          <div class="step-content">
+            <div class="step-tag">Retrieval Challenge</div>
+            <div class="step-title">One hard question at the end</div>
+            <div class="step-body">At the close of your session, Threshold asks a genuinely difficult question about what you just studied. Not recall — genuine retrieval. The difficulty is the point: Robert Bjork's research shows that the harder the retrieval effort, the larger the dopamine response when you succeed. Finishing should feel earned.</div>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-number">06</div>
+          <div class="step-content">
+            <div class="step-tag">Session Reflection</div>
+            <div class="step-title">Close the curiosity loop</div>
+            <div class="step-body">One final question: "What surprised you today?" This is not journalling for its own sake. It closes the curiosity loop your brain opened at the start of the session, reinforces memory encoding, and ends the session on discovery rather than exhaustion.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── DOPAMINE THERMOSTAT ─── -->
+  <section class="thermostat-section">
+    <div class="container">
+      <div class="section-label">The dopamine thermostat</div>
+      <h2 class="section-title reveal">
+        Stimulation calibrated<br />to your <em>actual state</em> —<br />not a fixed schedule.
+      </h2>
+      <p class="section-body reveal">Most apps layer rewards on top of whatever state you're in. Threshold treats your neurochemical state like a thermostat — it only acts when the temperature moves out of range.</p>
+
+      <div class="thermostat-grid reveal">
+        <div class="thermo-card thermo-low">
+          <div class="thermo-range">1–4</div>
+          <div class="thermo-label">Low state</div>
+          <div class="thermo-response">
+            <strong>You're struggling to engage.</strong> Threshold offers a small stimulation — a new curiosity hook on the same topic, a surprising connection to something you already know, or a quiet reframe of what you're doing and why. Nothing loud. Just enough to shift the gear.
+          </div>
+        </div>
+
+        <div class="thermo-card thermo-mid">
+          <div class="thermo-range">5–6</div>
+          <div class="thermo-label">Moderate state</div>
+          <div class="thermo-response">
+            <strong>You're present but not quite locked in.</strong> A mild nudge — a reframe of the task ahead, or a small question that re-engages your curiosity about the material without pulling you out of the session.
+          </div>
+        </div>
+
+        <div class="thermo-card thermo-high">
+          <div class="thermo-range">7–10</div>
+          <div class="thermo-label">Flow state</div>
+          <div class="thermo-response">
+            <strong>You're in it. Threshold steps back.</strong> A calm acknowledgement — "you're in a good state, keep going" — and then silence. Adding stimulation to an already high state leads to crashes and burnout. The app knows when to disappear.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── GRADUATION ARC ─── -->
+  <section class="graduation-section" id="philosophy">
+    <div class="container">
+      <div class="section-label">The graduation arc</div>
+      <h2 class="section-title reveal">
+        The only app designed<br />to make itself <em>unnecessary.</em>
+      </h2>
+      <p class="section-body reveal">Every other productivity tool wants your daily retention. Threshold has a different success metric: the moment you no longer need it.</p>
+
+      <div class="grad-arc">
+        <div class="grad-phases reveal">
+          <div class="phase">
+            <div class="phase-time">Week 1–2</div>
+            <div>
+              <div class="phase-title">Entry ramp</div>
+              <div class="phase-body">The app meets you where you are — with a depleted dopamine baseline from doomscrolling — and competes with your phone using mild external rewards. More hooks, more check-ins, more visible encouragement. It earns your attention before it asks for your effort.</div>
+            </div>
+          </div>
+
+          <div class="phase">
+            <div class="phase-time">Week 2–4</div>
+            <div>
+              <div class="phase-title">Quiet pullback</div>
+              <div class="phase-body">Based on your check-in data, the app begins reducing stimulation when it detects your state during studying is consistently high without having just received a reward. That signal means intrinsic motivation is beginning to grow. The pullback follows your data, not a fixed schedule.</div>
+            </div>
+          </div>
+
+          <div class="phase">
+            <div class="phase-time">Month 2+</div>
+            <div>
+              <div class="phase-title">Quiet companion</div>
+              <div class="phase-body">Less stimulation, more trust. The structure remains but the scaffolding is lighter. You begin generating your own curiosity naturally — the app is no longer providing it, only creating space for it.</div>
+            </div>
+          </div>
+
+          <div class="phase">
+            <div class="phase-time">Eventually</div>
+            <div>
+              <div class="phase-title">Graduation</div>
+              <div class="phase-body">The app suggests you try a session without it. <em>"You've had 7 strong sessions this week. Try one tomorrow without opening us first. See how it feels."</em> Graduation is the goal. Students who reach this stage are the success metric — not retention numbers.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grad-philosophy reveal">
+          <div class="philosophy-card">
+            <div class="card-label">The design principle</div>
+            <blockquote>"We are explicitly designing toward our own obsolescence. Every feature asks: does this build the student's capacity, or replace it?"</blockquote>
+            <p>This is the core philosophical difference from every competitor. Habit-forming apps are built to be irreplaceable. Threshold is built to be outgrown. It believes the struggle and effort of learning is itself the reward — and its entire design is oriented around helping the student feel that truth, not just be told it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── SCIENCE ─── -->
+  <section class="science-section" id="science">
+    <div class="container">
+      <div class="section-label">The neuroscience</div>
+      <h2 class="section-title reveal">
+        The intelligence is<br />under the hood.
+      </h2>
+
+      <div class="science-grid reveal">
+        <div class="science-item">
+          <div class="sci-source">Gruber & Ranganath, 2014</div>
+          <div class="sci-title">Curiosity activates the same dopamine circuits as external reward</div>
+          <div class="sci-body">The neuroscience behind the curiosity hook. Genuine curiosity — not gamification — produces the same anticipatory dopamine as receiving a prize. Threshold uses this to create motivation before effort, not after.</div>
+        </div>
+
+        <div class="science-item">
+          <div class="sci-source">Huberman Lab</div>
+          <div class="sci-title">Attaching reward to effort rather than outcome</div>
+          <div class="sci-body">The Pact, the session arc, and the thermostat are all built around this principle. The app trains the brain to find the act of studying rewarding — not the grade at the end — by shaping how each session begins and closes.</div>
+        </div>
+
+        <div class="science-item">
+          <div class="sci-source">Robert Bjork — Desirable Difficulties</div>
+          <div class="sci-title">Harder retrieval produces larger rewards</div>
+          <div class="sci-body">The end-of-session retrieval question is deliberately difficult. Bjork's research shows that the effort required to retrieve knowledge amplifies the dopamine response when retrieval succeeds. Finishing should feel genuinely earned.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── NOT THIS ─── -->
+  <section class="not-section">
+    <div class="container">
+      <div class="section-label">What Threshold is not</div>
+      <h2 class="section-title reveal">
+        Every category this<br />isn't — and <em>why.</em>
+      </h2>
+
+      <div class="not-grid reveal">
+        <div class="not-item">
+          <div class="not-label">Khan Academy / Learning platforms</div>
+          <div class="not-reason">Threshold does not teach content. It teaches the brain to want to learn — and then gets out of the way of whatever learning tool the student uses.</div>
+        </div>
+        <div class="not-item">
+          <div class="not-label">Notion / Note-taking tools</div>
+          <div class="not-reason">Threshold does not store information passively. The architecture is about session state, not knowledge management.</div>
+        </div>
+        <div class="not-item">
+          <div class="not-label">Habitica / RPG gamification</div>
+          <div class="not-reason">No fantasy mechanics, no skins, no XP systems. The intelligence is invisible. The student should feel the app understands them without being able to articulate why.</div>
+        </div>
+        <div class="not-item">
+          <div class="not-label">Forest / Guilt-based focus apps</div>
+          <div class="not-reason">Guilt and visual metaphor are not dopamine. Watching a tree die is not the same as genuinely wanting to study. Threshold competes for attention at the neurochemical level, not the aesthetic one.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── CTA ─── -->
+  <section class="cta-section" id="begin">
+    <div class="container">
+      <div class="section-label">Begin now</div>
+      <h2 class="cta-title reveal">
+        The first five minutes<br />are always the <em>hardest.</em>
+      </h2>
+      <p class="cta-sub reveal">Pact is free. No setup, no account required. Enter your name and your session begins. The whole thing takes thirty seconds to start.</p>
+
+      <div class="reveal">
+        <a href="/pact.html" class="btn-primary" style="display:inline-block;">Begin your first session →</a>
+      </div>
+      <p class="cta-note reveal" style="margin-top:1.5rem;">Free, always. Private in your browser. No tracking.</p>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-logo">Pact</div>
+    <div class="footer-line">Built for students who open Instagram instead of their textbook. · Free, always.</div>
+  </footer>
+
+  <script>
+    // ─── Hook rotation ───
+    const hooks = [
+      {
+        subject: "Mathematics — Complex Numbers",
+        text: "The equation e<sup>iπ</sup> + 1 = 0 connects five of the most fundamental constants in all of mathematics in a single line — and you're about to learn why that's even possible."
+      },
+      {
+        subject: "History — The French Revolution",
+        text: "The revolution that invented the concept of 'left' and 'right' in politics began not with a battle, but with a seating arrangement in a room that no longer exists."
+      },
+      {
+        subject: "Biology — DNA Replication",
+        text: "Every time one of your cells divides, it copies three billion letters of code in under an hour — with an error rate lower than one in a billion. Your body has a spell-checker more reliable than any software ever written."
+      },
+      {
+        subject: "Physics — Quantum Mechanics",
+        text: "An electron passes through two slits simultaneously — not as a metaphor, and not because we missed something, but because that is simply what electrons do. Physics hasn't explained this. It's just confirmed it keeps happening."
+      },
+      {
+        subject: "Literature — Shakespeare",
+        text: "Shakespeare invented over 1,700 words still in everyday use — including 'bedroom', 'lonely', and 'eyeball'. Before him, English had no word for those things."
+      },
+      {
+        subject: "Economics — Supply & Demand",
+        text: "During the 1800s California Gold Rush, the people who got rich weren't the gold miners. They were the people selling shovels. Supply and demand has been hiding in plain sight ever since."
+      }
+    ];
+
+    let currentHook = 0;
+
+    function buildDots() {
+      const nav = document.getElementById('hookNav');
+      nav.innerHTML = '';
+      hooks.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'hook-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => setHook(i));
+        nav.appendChild(dot);
+      });
+    }
+
+    function setHook(i) {
+      currentHook = i;
+      const card = document.getElementById('hookCard');
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(8px)';
+      setTimeout(() => {
+        document.getElementById('hookSubject').textContent = hooks[i].subject;
+        document.getElementById('hookText').innerHTML = hooks[i].text;
+        card.style.transition = 'opacity 0.4s, transform 0.4s';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+        document.querySelectorAll('.hook-dot').forEach((d, j) => {
+          d.classList.toggle('active', j === i);
+        });
+      }, 200);
+    }
+
+    buildDots();
+    setInterval(() => {
+      setHook((currentHook + 1) % hooks.length);
+    }, 5000);
+
+    // ─── Scroll reveal ───
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+  </script>
+</body>
+</html>
