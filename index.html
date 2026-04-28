@@ -7,10 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,600&family=Outfit:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
- 
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
     :root {
       --bg:            #f8f3ec;
       --text:          #2d2a29;
@@ -37,9 +37,9 @@
       --r-lg:   26px;
       --r-pill: 999px;
     }
- 
+
     html { scroll-behavior: smooth; }
- 
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -48,7 +48,7 @@
       line-height: 1.7;
       overflow-x: hidden;
     }
- 
+
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -57,10 +57,10 @@
       pointer-events: none;
       z-index: 9999;
     }
- 
+
     /* ── background image helper ── */
     .section-wrap { position: relative; overflow: hidden; }
- 
+
     .bg-img {
       position: absolute;
       inset: 0;
@@ -73,13 +73,13 @@
       user-select: none;
       z-index: 0;
     }
- 
+
     .bg-img-light { opacity: 0.09; mix-blend-mode: multiply; }
     .bg-img-dark  { opacity: 0.12; mix-blend-mode: luminosity; filter: grayscale(30%); }
- 
+
     .section-wrap > .container,
     .section-wrap > .hero { position: relative; z-index: 1; }
- 
+
     /* NAV */
     nav {
       position: fixed;
@@ -93,7 +93,7 @@
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
     }
- 
+
     .nav-logo {
       font-family: var(--serif);
       font-size: 1.35rem;
@@ -105,20 +105,20 @@
       align-items: center;
       gap: 0.55rem;
     }
- 
+
     .nav-logo::before {
       content: '';
       width: 9px; height: 9px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--rose), var(--teal));
     }
- 
+
     .nav-links {
       display: flex;
       gap: 2.25rem;
       list-style: none;
     }
- 
+
     .nav-links a {
       font-size: 0.82rem;
       font-weight: 500;
@@ -128,9 +128,9 @@
       text-decoration: none;
       transition: color 0.25s;
     }
- 
+
     .nav-links a:hover { color: var(--text); }
- 
+
     .nav-cta {
       font-size: 0.8rem;
       font-weight: 600;
@@ -144,12 +144,12 @@
       box-shadow: 0 6px 20px rgba(53, 92, 86, 0.25);
       transition: transform 0.25s, box-shadow 0.25s;
     }
- 
+
     .nav-cta:hover {
       transform: translateY(-1px);
       box-shadow: 0 10px 28px rgba(53, 92, 86, 0.32);
     }
- 
+
     /* HERO — reduced top space */
     .hero {
       min-height: 100vh;
@@ -161,7 +161,7 @@
       max-width: 1100px;
       margin: 0 auto;
     }
- 
+
     .hero-eyebrow {
       display: inline-flex;
       align-items: center;
@@ -179,7 +179,7 @@
       opacity: 0;
       animation: fadeUp 0.8s 0.2s forwards;
     }
- 
+
     .hero-headline {
       font-family: var(--serif);
       font-size: clamp(3.2rem, 7vw, 6.5rem);
@@ -191,13 +191,13 @@
       opacity: 0;
       animation: fadeUp 0.9s 0.4s forwards;
     }
- 
+
     .hero-headline em {
       font-style: italic;
       font-weight: 300;
       color: var(--teal);
     }
- 
+
     .hero-sub {
       margin-top: 1.75rem;
       font-size: 1.1rem;
@@ -208,7 +208,7 @@
       opacity: 0;
       animation: fadeUp 0.9s 0.6s forwards;
     }
- 
+
     .hero-actions {
       margin-top: 2.5rem;
       display: flex;
@@ -217,7 +217,7 @@
       opacity: 0;
       animation: fadeUp 0.9s 0.8s forwards;
     }
- 
+
     /* hero trust chips */
     .hero-meta {
       display: flex;
@@ -227,7 +227,7 @@
       opacity: 0;
       animation: fadeUp 0.9s 0.95s forwards;
     }
- 
+
     .hero-meta-item {
       display: inline-flex;
       align-items: center;
@@ -240,14 +240,14 @@
       padding: 0.3rem 0.85rem;
       border-radius: var(--r-pill);
     }
- 
+
     .hero-meta-item::before {
       content: '✓';
       font-size: 0.7rem;
       color: var(--teal);
       font-weight: 700;
     }
- 
+
     /* CAMUS QUOTE — enlarged & more presence */
     .hero-quote {
       margin-top: 3rem;
@@ -264,7 +264,7 @@
       animation: fadeUp 0.9s 1.1s forwards;
       max-width: 680px;
     }
- 
+
     .hero-quote cite {
       display: block;
       font-style: normal;
@@ -277,7 +277,7 @@
       opacity: 0.7;
       margin-top: 0.85rem;
     }
- 
+
     /* BUTTONS */
     .btn-primary {
       display: inline-flex;
@@ -296,12 +296,12 @@
       box-shadow: 0 12px 32px rgba(53, 92, 86, 0.28);
       transition: transform 0.25s, box-shadow 0.25s;
     }
- 
+
     .btn-primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 18px 40px rgba(53, 92, 86, 0.35);
     }
- 
+
     .btn-ghost {
       font-size: 0.85rem;
       font-weight: 500;
@@ -314,15 +314,15 @@
       gap: 0.4rem;
       transition: color 0.25s;
     }
- 
+
     .btn-ghost:hover { color: var(--text); }
     .btn-ghost::after { content: '→'; }
- 
+
     /* SECTION BASE */
     section { padding: 7rem 3rem; }
- 
+
     .container { max-width: 1100px; margin: 0 auto; }
- 
+
     .section-label {
       display: inline-flex;
       align-items: center;
@@ -333,12 +333,12 @@
       text-transform: uppercase;
       margin-bottom: 1.5rem;
     }
- 
+
     .label-teal  { color: var(--teal);       background: var(--teal-soft); border: 1px solid rgba(53,92,86,.18);    padding: 0.3rem 0.85rem; border-radius: var(--r-pill); }
     .label-rose  { color: #a85a47;            background: var(--rose-soft); border: 1px solid rgba(213,141,123,.25); padding: 0.3rem 0.85rem; border-radius: var(--r-pill); }
     .label-amber { color: var(--amber-deep);  background: var(--amber);     border: 1px solid rgba(184,137,74,.2);  padding: 0.3rem 0.85rem; border-radius: var(--r-pill); }
     .label-sky   { color: #3a6a96;            background: var(--sky);       border: 1px solid rgba(58,106,150,.18); padding: 0.3rem 0.85rem; border-radius: var(--r-pill); }
- 
+
     .section-title {
       font-family: var(--serif);
       font-size: clamp(2.2rem, 4.5vw, 3.8rem);
@@ -348,9 +348,9 @@
       color: var(--text);
       max-width: 700px;
     }
- 
+
     .section-title em { font-style: italic; font-weight: 300; color: var(--teal); }
- 
+
     .section-body {
       font-size: 1.05rem;
       font-weight: 400;
@@ -359,10 +359,10 @@
       margin-top: 1.5rem;
       line-height: 1.85;
     }
- 
+
     /* DIVIDER */
     .divider { width: 100%; height: 1px; background: var(--border); }
- 
+
     /* PROBLEM — rose blush */
     .problem {
       background:
@@ -370,7 +370,7 @@
         radial-gradient(circle at bottom left, rgba(213,141,123,0.15), transparent 35%),
         #fdf6f3;
     }
- 
+
     .problem-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -378,11 +378,11 @@
       align-items: center;
       margin-top: 4rem;
     }
- 
+
     .problem-stat { display: flex; flex-direction: column; gap: 2rem; }
- 
+
     .stat-item { border-left: 3px solid var(--rose); padding-left: 1.75rem; }
- 
+
     .stat-number {
       font-family: var(--serif);
       font-size: 3.8rem;
@@ -391,23 +391,23 @@
       color: var(--rose);
       line-height: 1;
     }
- 
+
     .stat-label { font-size: 0.88rem; color: var(--muted); margin-top: 0.35rem; }
- 
+
     .problem-text { display: flex; flex-direction: column; gap: 1.25rem; }
- 
+
     .problem-text p { font-size: 1.05rem; color: var(--muted); line-height: 1.85; }
     .problem-text p strong { color: var(--text); font-weight: 600; }
- 
+
     /* HOOK DEMO — sage green */
     .hook-section {
       background:
         radial-gradient(circle at top left, rgba(220,233,226,0.6), transparent 40%),
         #f2f8f5;
     }
- 
+
     .hook-display { margin-top: 3.5rem; position: relative; }
- 
+
     .hook-card {
       border: 1px solid rgba(53,92,86,0.15);
       border-radius: var(--r-lg);
@@ -419,7 +419,7 @@
       position: relative;
       overflow: hidden;
     }
- 
+
     .hook-card::before {
       content: '"';
       font-family: var(--script);
@@ -431,7 +431,7 @@
       line-height: 1;
       pointer-events: none;
     }
- 
+
     .hook-subject {
       font-size: 0.7rem;
       font-weight: 700;
@@ -440,7 +440,7 @@
       color: var(--teal);
       margin-bottom: 1.5rem;
     }
- 
+
     .hook-text {
       font-family: var(--script);
       font-size: 1.55rem;
@@ -449,9 +449,9 @@
       color: var(--text);
       font-style: italic;
     }
- 
+
     .hook-nav { display: flex; gap: 0.75rem; margin-top: 2rem; }
- 
+
     .hook-dot {
       width: 7px; height: 7px;
       border-radius: 50%;
@@ -460,17 +460,17 @@
       transition: background 0.3s, transform 0.3s;
       border: none; outline: none;
     }
- 
+
     .hook-dot.active { background: var(--teal); transform: scale(1.3); }
- 
+
     .hook-cta { margin-top: 1.75rem; }
- 
+
     .hook-aside { margin-top: 1.5rem; max-width: 500px; }
     .hook-aside p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; }
- 
+
     /* THE LOOP */
     .loop-steps { margin-top: 4rem; display: flex; flex-direction: column; }
- 
+
     .step {
       display: grid;
       grid-template-columns: 80px 1fr;
@@ -480,9 +480,9 @@
       align-items: start;
       transition: all 0.3s;
     }
- 
+
     .step:last-child { border-bottom: 1px solid var(--border); }
- 
+
     .step-number {
       font-family: var(--serif);
       font-size: 2.8rem;
@@ -492,9 +492,9 @@
       letter-spacing: -0.04em;
       transition: color 0.3s;
     }
- 
+
     .step:hover .step-number { color: var(--teal); }
- 
+
     .step-title {
       font-family: var(--serif);
       font-size: 1.5rem;
@@ -503,14 +503,14 @@
       color: var(--text);
       margin-bottom: 0.5rem;
     }
- 
+
     .step-body {
       font-size: 0.95rem;
       color: var(--muted);
       line-height: 1.8;
       max-width: 560px;
     }
- 
+
     .step-tag {
       display: inline-flex;
       align-items: center;
@@ -525,7 +525,7 @@
       padding: 0.2rem 0.7rem;
       margin-bottom: 0.75rem;
     }
- 
+
     .step-link {
       display: inline-flex;
       align-items: center;
@@ -539,24 +539,24 @@
       text-decoration: none;
       transition: gap 0.2s;
     }
- 
+
     .step-link::after { content: '→'; }
     .step-link:hover { gap: 0.55rem; }
- 
+
     /* THERMOSTAT — sky blue */
     .thermostat-section {
       background:
         radial-gradient(circle at top right, rgba(220,232,243,0.65), transparent 40%),
         #f0f6fc;
     }
- 
+
     .thermostat-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.25rem;
       margin-top: 4rem;
     }
- 
+
     .thermo-card {
       background: rgba(255,255,255,0.92);
       border: 1px solid var(--border);
@@ -567,13 +567,13 @@
       overflow: hidden;
       transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     }
- 
+
     .thermo-card:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-md);
       border-color: var(--border-strong);
     }
- 
+
     .thermo-card::before {
       content: '';
       position: absolute;
@@ -581,11 +581,11 @@
       height: 4px;
       border-radius: var(--r-lg) var(--r-lg) 0 0;
     }
- 
+
     .thermo-low::before  { background: var(--rose); }
     .thermo-mid::before  { background: var(--amber-deep); }
     .thermo-high::before { background: var(--teal); }
- 
+
     .thermo-range {
       font-family: var(--serif);
       font-size: 3rem;
@@ -594,11 +594,11 @@
       line-height: 1;
       margin-bottom: 0.75rem;
     }
- 
+
     .thermo-low .thermo-range  { color: var(--rose); }
     .thermo-mid .thermo-range  { color: var(--amber-deep); }
     .thermo-high .thermo-range { color: var(--teal); }
- 
+
     .thermo-label {
       font-size: 0.7rem;
       font-weight: 700;
@@ -607,17 +607,17 @@
       color: var(--muted);
       margin-bottom: 1.25rem;
     }
- 
+
     .thermo-response { font-size: 0.95rem; color: var(--muted); line-height: 1.75; }
     .thermo-response strong { color: var(--text); font-weight: 600; }
- 
+
     /* GRADUATION — amber warm */
     .graduation-section {
       background:
         radial-gradient(circle at bottom right, rgba(241,223,189,0.5), transparent 38%),
         #fdf9f1;
     }
- 
+
     .grad-arc {
       margin-top: 4rem;
       display: grid;
@@ -625,9 +625,9 @@
       gap: 4rem;
       align-items: start;
     }
- 
+
     .grad-phases { display: flex; flex-direction: column; }
- 
+
     .phase {
       padding: 2rem 0;
       border-top: 1px solid var(--border);
@@ -636,9 +636,9 @@
       gap: 1.5rem;
       align-items: start;
     }
- 
+
     .phase:last-child { border-bottom: 1px solid var(--border); }
- 
+
     .phase-time {
       font-size: 0.72rem;
       font-weight: 700;
@@ -647,7 +647,7 @@
       color: var(--amber-deep);
       padding-top: 0.2rem;
     }
- 
+
     .phase-title {
       font-family: var(--serif);
       font-size: 1.2rem;
@@ -656,11 +656,11 @@
       color: var(--text);
       margin-bottom: 0.4rem;
     }
- 
+
     .phase-body { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
- 
+
     .grad-philosophy { position: sticky; top: 6rem; }
- 
+
     .philosophy-card {
       border: 1px solid rgba(184,137,74,0.25);
       border-radius: var(--r-lg);
@@ -668,7 +668,7 @@
       background: linear-gradient(160deg, rgba(255,251,245,0.98), rgba(255,246,232,0.92));
       box-shadow: var(--shadow-md);
     }
- 
+
     .philosophy-card .card-label {
       font-size: 0.68rem;
       font-weight: 700;
@@ -678,7 +678,7 @@
       opacity: 0.8;
       margin-bottom: 1.5rem;
     }
- 
+
     .philosophy-card blockquote {
       font-family: var(--script);
       font-size: 1.35rem;
@@ -688,32 +688,32 @@
       color: var(--text);
       margin-bottom: 1.5rem;
     }
- 
+
     .philosophy-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
- 
+
     /* SCIENCE — deep teal inverted */
     .science-section {
       background: linear-gradient(145deg, #2a4a45 0%, #1e3632 60%, #192e2a 100%);
       color: #e8f0ee;
     }
- 
+
     .science-section .section-label.label-teal {
       background: rgba(255,255,255,0.08);
       border-color: rgba(255,255,255,0.15);
       color: #a8c9c4;
     }
- 
+
     .science-section .section-title { color: #f0f7f5; }
     .science-section .section-title em { color: #8ecfc8; }
     .science-section .section-body { color: rgba(220,233,226,0.75); }
- 
+
     .science-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
       margin-top: 4rem;
     }
- 
+
     .science-item {
       padding: 2rem;
       border: 1px solid rgba(255,255,255,0.1);
@@ -722,9 +722,9 @@
       backdrop-filter: blur(8px);
       transition: background 0.3s, transform 0.3s;
     }
- 
+
     .science-item:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
- 
+
     .sci-source {
       font-size: 0.67rem;
       font-weight: 700;
@@ -733,7 +733,7 @@
       color: #8ecfc8;
       margin-bottom: 1rem;
     }
- 
+
     .sci-title {
       font-family: var(--serif);
       font-size: 1.3rem;
@@ -743,19 +743,19 @@
       margin-bottom: 0.75rem;
       line-height: 1.3;
     }
- 
+
     .sci-body { font-size: 0.9rem; color: rgba(220,233,226,0.7); line-height: 1.8; }
- 
+
     /* NOT THIS */
     .not-section { background: var(--bg); }
- 
+
     .not-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
       margin-top: 4rem;
     }
- 
+
     .not-item {
       background: rgba(255,255,255,0.85);
       border: 1px solid var(--border);
@@ -766,9 +766,9 @@
       gap: 0.5rem;
       transition: border-color 0.25s, transform 0.25s;
     }
- 
+
     .not-item:hover { border-color: var(--border-strong); transform: translateY(-1px); }
- 
+
     .not-label {
       font-size: 0.68rem;
       font-weight: 700;
@@ -779,9 +779,9 @@
       text-decoration-color: var(--rose);
       text-decoration-thickness: 2px;
     }
- 
+
     .not-reason { font-size: 0.95rem; color: var(--muted); line-height: 1.7; }
- 
+
     /* CTA — deep teal */
     .cta-section {
       background: linear-gradient(145deg, #2d5250 0%, #24413d 50%, #1a3330 100%);
@@ -789,7 +789,7 @@
       position: relative;
       overflow: hidden;
     }
- 
+
     .cta-section::before {
       content: '';
       position: absolute;
@@ -799,7 +799,7 @@
       background: radial-gradient(circle, rgba(213,141,123,0.12) 0%, transparent 65%);
       pointer-events: none;
     }
- 
+
     .cta-section .section-label { justify-content: center; }
     .cta-section .section-label::before { display: none; }
     .cta-section .label-teal {
@@ -807,7 +807,7 @@
       border-color: rgba(255,255,255,0.15);
       color: #a8c9c4;
     }
- 
+
     .cta-title {
       font-family: var(--serif);
       font-size: clamp(2.8rem, 5vw, 4.5rem);
@@ -818,9 +818,9 @@
       max-width: 680px;
       margin: 0 auto 1.75rem;
     }
- 
+
     .cta-title em { font-style: italic; font-weight: 300; color: #8ecfc8; }
- 
+
     .cta-sub {
       font-size: 1.05rem;
       color: rgba(220,233,226,0.72);
@@ -828,7 +828,7 @@
       margin: 0 auto 3rem;
       line-height: 1.8;
     }
- 
+
     /* CTA buttons — side-by-side on dark bg */
     .cta-buttons {
       display: flex;
@@ -837,21 +837,21 @@
       gap: 1.5rem;
       flex-wrap: wrap;
     }
- 
+
     .cta-section .btn-primary {
       background: linear-gradient(135deg, var(--rose) 0%, #c07060 100%);
       box-shadow: 0 10px 30px rgba(213,141,123,0.35);
     }
- 
+
     .cta-section .btn-primary:hover {
       box-shadow: 0 16px 38px rgba(213,141,123,0.45);
     }
- 
+
     .cta-section .btn-ghost { color: rgba(220,233,226,0.65); }
     .cta-section .btn-ghost:hover { color: #f0f7f5; }
- 
+
     .cta-note { font-size: 0.74rem; color: rgba(220,233,226,0.4); margin-top: 2rem; letter-spacing: 0.05em; }
- 
+
     /* FOOTER */
     footer {
       padding: 2.75rem 3rem;
@@ -861,15 +861,15 @@
       align-items: center;
       background: var(--bg);
     }
- 
+
     .footer-logo { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; color: var(--muted); text-decoration: none; }
- 
+
     .footer-links {
       display: flex;
       gap: 2rem;
       list-style: none;
     }
- 
+
     .footer-links a {
       font-size: 0.8rem;
       font-weight: 500;
@@ -880,25 +880,25 @@
       opacity: 0.7;
       transition: opacity 0.2s;
     }
- 
+
     .footer-links a:hover { opacity: 1; }
- 
+
     .footer-line { font-size: 0.74rem; letter-spacing: 0.05em; color: var(--muted); opacity: 0.45; max-width: 260px; text-align: right; line-height: 1.5; }
- 
+
     /* ANIMATIONS */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
- 
+
     .reveal {
       opacity: 0;
       transform: translateY(22px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
- 
+
     .reveal.visible { opacity: 1; transform: translateY(0); }
- 
+
     /* RESPONSIVE */
     @media (max-width: 900px) {
       nav { padding: 1.1rem 1.5rem; }
@@ -916,7 +916,7 @@
       .footer-links    { justify-content: center; }
       .footer-line     { text-align: center; max-width: 100%; }
     }
- 
+
     @media (max-width: 600px) {
       .hero-headline { font-size: 2.8rem; }
       .cta-buttons   { flex-direction: column; }
@@ -924,7 +924,7 @@
   </style>
 </head>
 <body>
- 
+
   <!-- NAV -->
   <nav>
     <a href="/" class="nav-logo">Pact</a>
@@ -936,7 +936,7 @@
     </ul>
     <a href="pact.html" class="nav-cta">Begin now</a>
   </nav>
- 
+
   <!-- HERO — with subtle study-desk background image -->
   <section class="section-wrap" style="padding:0;">
     <img
@@ -968,9 +968,9 @@
       </div>
     </div>
   </section>
- 
+
   <div class="divider"></div>
- 
+
   <!-- THE PROBLEM — rose blush + phone/distraction image -->
   <section id="the-problem" class="problem section-wrap">
     <img
@@ -985,7 +985,7 @@
       <h2 class="section-title">
         Most apps reward you<br />for finishing. <em>No one</em><br />helps you start.
       </h2>
- 
+
       <div class="problem-grid reveal">
         <div class="problem-stat">
           <div class="stat-item">
@@ -1001,7 +1001,7 @@
             <div class="stat-label">productivity apps designed to reduce your reliance on them over time. Until Pact.</div>
           </div>
         </div>
- 
+
         <div class="problem-text">
           <p>The phone isn't the enemy. <strong>Depleted dopamine is.</strong> When you scroll for thirty minutes before opening your textbook, you've already spent the neurochemical currency your brain needs to find studying rewarding.</p>
           <p>Every other productivity app assumes you can already begin. They give you timers, streaks, and checklists — all useful once you're working. <strong>They have nothing to say to the student staring at the ceiling.</strong></p>
@@ -1010,9 +1010,9 @@
       </div>
     </div>
   </section>
- 
+
   <div class="divider"></div>
- 
+
   <!-- CURIOSITY HOOK — sage + open book image -->
   <section class="hook-section section-wrap" id="how-it-works">
     <img
@@ -1028,7 +1028,7 @@
         You tell us what you're<br />studying. We show you<br />why it's <em>extraordinary.</em>
       </h2>
       <p class="section-body reveal">Before your session begins, Pact shows you one carefully crafted sentence about your topic. Not a summary. Not a fun fact. The most surprising destination of that subject — glimpsed from the doorway before you walk in.</p>
- 
+
       <div class="hook-display reveal">
         <div class="hook-card" id="hookCard">
           <div class="hook-subject" id="hookSubject">Mathematics — Complex Numbers</div>
@@ -1044,9 +1044,9 @@
       </div>
     </div>
   </section>
- 
+
   <div class="divider"></div>
- 
+
   <!-- THE SESSION ARC -->
   <section id="session-arc">
     <div class="container">
@@ -1054,7 +1054,7 @@
       <h2 class="section-title reveal">
         Every session follows<br />a <em>deliberate</em> shape.
       </h2>
- 
+
       <div class="loop-steps">
         <div class="step reveal">
           <div class="step-number">01</div>
@@ -1065,7 +1065,7 @@
             <a href="/login" class="step-link">Begin with the pact</a>
           </div>
         </div>
- 
+
         <div class="step reveal">
           <div class="step-number">02</div>
           <div class="step-content">
@@ -1075,7 +1075,7 @@
             <a href="/hook" class="step-link">Open the curiosity warm-up</a>
           </div>
         </div>
- 
+
         <div class="step reveal">
           <div class="step-number">03</div>
           <div class="step-content">
@@ -1085,7 +1085,7 @@
             <a href="/app" class="step-link">Open the study space</a>
           </div>
         </div>
- 
+
         <div class="step reveal">
           <div class="step-number">04</div>
           <div class="step-content">
@@ -1094,7 +1094,7 @@
             <div class="step-body">Every 25 minutes, a single question: how are you feeling right now, 1–10? One tap. Three seconds. Based on your answer, Pact adapts — more stimulation when you're low, silence when you're already in flow. It never adds fuel to a fire that's already burning.</div>
           </div>
         </div>
- 
+
         <div class="step reveal">
           <div class="step-number">05</div>
           <div class="step-content">
@@ -1104,7 +1104,7 @@
             <a href="/session" class="step-link">Start a focus sprint</a>
           </div>
         </div>
- 
+
         <div class="step reveal">
           <div class="step-number">06</div>
           <div class="step-content">
@@ -1116,9 +1116,9 @@
       </div>
     </div>
   </section>
- 
+
   <div class="divider"></div>
- 
+
   <!-- DOPAMINE THERMOSTAT — sky blue -->
   <section class="thermostat-section">
     <div class="container">
@@ -1127,7 +1127,7 @@
         Stimulation calibrated<br />to your <em>actual state</em> —<br />not a fixed schedule.
       </h2>
       <p class="section-body reveal">Most apps layer rewards on top of whatever state you're in. Pact treats your neurochemical state like a thermostat — it only acts when the temperature moves out of range.</p>
- 
+
       <div class="thermostat-grid reveal">
         <div class="thermo-card thermo-low">
           <div class="thermo-range">1–4</div>
@@ -1153,9 +1153,9 @@
       </div>
     </div>
   </section>
- 
+
   <div class="divider"></div>
- 
+
   <!-- GRADUATION ARC — amber warm -->
   <section id="philosophy" class="graduation-section section-wrap">
     <img
@@ -1171,7 +1171,7 @@
         The only app designed<br />to make itself <em>unnecessary.</em>
       </h2>
       <p class="section-body reveal">Every other productivity tool wants your daily retention. Pact has a different success metric: the moment you no longer need it.</p>
- 
+
       <div class="grad-arc">
         <div class="grad-phases reveal">
           <div class="phase">
@@ -1203,7 +1203,7 @@
             </div>
           </div>
         </div>
- 
+
         <div class="grad-philosophy reveal">
           <div class="philosophy-card">
             <div class="card-label">The design principle</div>
@@ -1214,9 +1214,9 @@
       </div>
     </div>
   </section>
- 
+
   <div class="divider"></div>
- 
+
   <!-- SCIENCE — deep teal + neuron image -->
   <section class="science-section section-wrap" id="science">
     <img
@@ -1231,7 +1231,7 @@
       <h2 class="section-title reveal">
         The intelligence is<br />under the hood.
       </h2>
- 
+
       <div class="science-grid reveal">
         <div class="science-item">
           <div class="sci-source">Gruber & Ranganath, 2014</div>
@@ -1251,9 +1251,9 @@
       </div>
     </div>
   </section>
- 
+
   <div class="divider"></div>
- 
+
   <!-- NOT THIS -->
   <section class="not-section">
     <div class="container">
@@ -1261,7 +1261,7 @@
       <h2 class="section-title reveal">
         Every category this<br />isn't — and <em>why.</em>
       </h2>
- 
+
       <div class="not-grid reveal">
         <div class="not-item">
           <div class="not-label">Khan Academy / Learning platforms</div>
@@ -1282,9 +1282,9 @@
       </div>
     </div>
   </section>
- 
+
   <div class="divider"></div>
- 
+
   <!-- CTA -->
   <section class="cta-section">
     <div class="container" style="position:relative;z-index:1;">
@@ -1293,7 +1293,7 @@
         The first five minutes<br />are always the <em>hardest.</em>
       </h2>
       <p class="cta-sub reveal">Pact is free. No account, no setup — just enter your name and your session begins. The whole thing takes thirty seconds to start.</p>
- 
+
       <div class="cta-buttons reveal">
         <a href="pact.html" class="btn-primary">Start your first session</a>
         <a href="/hook" class="btn-ghost">Try the curiosity warm-up first</a>
@@ -1301,7 +1301,7 @@
       <p class="cta-note reveal">Free, always. Private in your browser. No tracking.</p>
     </div>
   </section>
- 
+
   <!-- FOOTER -->
   <footer>
     <a href="/" class="footer-logo">Pact</a>
@@ -1313,7 +1313,7 @@
     </ul>
     <div class="footer-line">Built for students who open Instagram instead of their textbook.</div>
   </footer>
- 
+
   <script>
     // Hook rotation
     const hooks = [
@@ -1324,9 +1324,9 @@
       { subject: "Literature — Shakespeare", text: "Shakespeare invented over 1,700 words still in everyday use — including 'bedroom', 'lonely', and 'eyeball'. Before him, English had no word for those things." },
       { subject: "Economics — Supply & Demand", text: "During the 1800s California Gold Rush, the people who got rich weren't the gold miners. They were the people selling shovels. Supply and demand has been hiding in plain sight ever since." }
     ];
- 
+
     let currentHook = 0;
- 
+
     function buildDots() {
       const nav = document.getElementById('hookNav');
       nav.innerHTML = '';
@@ -1337,7 +1337,7 @@
         nav.appendChild(dot);
       });
     }
- 
+
     function setHook(i) {
       currentHook = i;
       const card = document.getElementById('hookCard');
@@ -1353,19 +1353,18 @@
         document.querySelectorAll('.hook-dot').forEach((d, j) => d.classList.toggle('active', j === i));
       }, 220);
     }
- 
+
     buildDots();
     setInterval(() => setHook((currentHook + 1) % hooks.length), 5000);
- 
+
     // Scroll reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
       });
     }, { threshold: 0.1 });
- 
+
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
- 
