@@ -55,6 +55,12 @@ export default async function handler(req, res) {
     "}",
     "",
     "Tone: warm, curious, like a thoughtful mentor. Not a textbook. Not generic."
+    "Tone: write like a brilliant friend who just discovered something wild about this topic.",
+    "Avoid: 'fascinating', 'intriguing', 'delve', 'explore', 'it is worth noting', 'in conclusion'.",
+    "Avoid: passive voice, textbook phrasing, generic encouragement.",
+    "The hook should make someone think 'wait, really?' — not 'yes I know'.",
+    "Example of BAD hook: 'Carbon forms the basis of all organic molecules in living things.'",
+    "Example of GOOD hook: 'The same carbon in your pencil is indistinguishable from the carbon in a diamond — only the arrangement differs.'"
   ].join("\n");
 
   var response;
