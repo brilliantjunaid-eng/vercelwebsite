@@ -54,7 +54,6 @@ export default async function handler(req, res) {
     "  }",
     "}",
     "",
-    "Tone: warm, curious, like a thoughtful mentor. Not a textbook. Not generic."
     "Tone: write like a brilliant friend who just discovered something wild about this topic.",
     "Avoid: 'fascinating', 'intriguing', 'delve', 'explore', 'it is worth noting', 'in conclusion'.",
     "Avoid: passive voice, textbook phrasing, generic encouragement.",
