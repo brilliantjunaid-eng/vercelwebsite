@@ -69,7 +69,6 @@ function generateAIContent(topic, subject, onSuccess, onError) {
     if (!Array.isArray(parsed.lowSupport)  || !parsed.lowSupport.length)  parsed.lowSupport  = ["Stay with the next single step.", "One move at a time is enough right now."];
     if (!Array.isArray(parsed.midSupport)  || !parsed.midSupport.length)  parsed.midSupport  = ["Ask what the core idea really is.", "Name the central question in plain words first."];
     if (!Array.isArray(parsed.highSupport) || !parsed.highSupport.length) parsed.highSupport = ["You are in a good state. Keep going.", "Stay quiet and let the work carry you."];
-    parsed.visualKind = "generic-curve";
 
     setAICache(buildAICacheKey(topic, subject), parsed);
     onSuccess(parsed);
