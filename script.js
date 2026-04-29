@@ -1364,7 +1364,7 @@ function renderTopicVisual(content) {
   // fallback to whatever it was doing before
   return "";
 }
-}
+
 
 /* â”€â”€ STORAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function hydrateAppState(rawState) {
