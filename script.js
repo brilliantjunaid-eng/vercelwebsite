@@ -477,7 +477,6 @@ function initHomePage() {
   // Auto-redirect if already logged in — home page is for new visitors only
   if (user) { navigate("app"); return; }
 }
-}
 
 function initLoginPage() {
   var form          = document.getElementById("loginForm");
