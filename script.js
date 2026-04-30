@@ -22,66 +22,76 @@ function getPageFromLocation() {
 function navigate(pageName, options) {
   options = options || {};
   pageName = normalizePageName(pageName);
-  stopSessionTimer();
 
-  // Cache original templates once
+  // Only stop the timer if we're actually leaving the session page
+  var leavingSession = document.querySelector(".page-view.active") &&
+    document.querySelector(".page-view.active").id === "page-session";
+  if (leavingSession && pageName !== "session") stopSessionTimer();
+
+  // Cache templates once
   ["home","login","app","hook","session"].forEach(function(name) {
     var el = document.getElementById("page-" + name);
-    if (el && !PAGE_TEMPLATES[name]) {
-      PAGE_TEMPLATES[name] = el.innerHTML;
+    if (el && !PAGE_TEMPLATES[name]) PAGE_TEMPLATES[name] = el.innerHTML;
+  });
+
+  var currentActive = document.querySelector(".page-view.active");
+
+  function doSwap() {
+    document.querySelectorAll(".page-view").forEach(function(el) {
+      el.classList.remove("active", "page-leaving");
+    });
+
+    var target = document.getElementById("page-" + pageName);
+    if (!target) return;
+    if (PAGE_TEMPLATES[pageName]) target.innerHTML = PAGE_TEMPLATES[pageName];
+    target.classList.add("active");
+    window.scrollTo(0, 0);
+
+    // Re-trigger reveal animations on fresh DOM nodes
+    var reveals = target.querySelectorAll(".reveal");
+    reveals.forEach(function(el, i) {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(14px)";
+    });
+    setTimeout(function() {
+      reveals.forEach(function(el, i) {
+        setTimeout(function() {
+          el.style.transition = "opacity 0.35s ease, transform 0.35s ease";
+          el.style.opacity = "1";
+          el.style.transform = "translateY(0)";
+        }, i * 55);
+      });
+    }, 20);
+
+    if (!options.skipHash) {
+      var nextHash = pageToHash(pageName);
+      if (window.location.hash !== nextHash) history.replaceState(null, "", nextHash);
     }
-  });
 
-  // Hide all
-  document.querySelectorAll(".page-view").forEach(function(el) {
-    el.classList.remove("active");
-  });
+    // Mark active nav link
+    target.querySelectorAll(".site-nav a").forEach(function(link) {
+      var href = link.getAttribute("href") || "";
+      var match = href.match(/^(index|login|app|hook|session)\.html/);
+      var linkPage = match ? (match[1] === "index" ? "home" : match[1]) : null;
+      link.classList.toggle("nav-active", linkPage === pageName);
+    });
 
-  // Restore fresh DOM and show
-  var target = document.getElementById("page-" + pageName);
-  if (!target) return;
-  if (PAGE_TEMPLATES[pageName]) target.innerHTML = PAGE_TEMPLATES[pageName];
-  target.classList.add("active");
-  window.scrollTo(0, 0);
-
-  if (!options.skipHash) {
-    var nextHash = pageToHash(pageName);
-    if (window.location.hash !== nextHash) {
-      history.replaceState(null, "", nextHash);
+    switch (pageName) {
+      case "home":    initHomePage();    break;
+      case "login":   initLoginPage();   break;
+      case "app":     initAppPage();     break;
+      case "hook":    initHookPage();    break;
+      case "session": initSessionPage(); break;
     }
   }
 
-  // Init
-  switch (pageName) {
-    case "home":    initHomePage();    break;
-    case "login":   initLoginPage();   break;
-    case "app":     initAppPage();     break;
-    case "hook":    initHookPage();    break;
-    case "session": initSessionPage(); break;
+  if (currentActive && !currentActive.classList.contains("page-leaving")) {
+    currentActive.classList.add("page-leaving");
+    setTimeout(doSwap, 160);
+  } else {
+    doSwap();
   }
 }
-
-// Intercept all internal <a href="*.html"> clicks
-document.addEventListener("click", function(e) {
-  var link = e.target.closest("a[href]");
-  if (!link) return;
-  var href = link.getAttribute("href");
-  var match = href && href.match(/^(index|login|app|hook|session)\.html/);
-  if (match) {
-    e.preventDefault();
-    navigate(match[1] === "index" ? "home" : match[1]);
-    return;
-  }
-
-  if (href && href.charAt(0) === "#") {
-    var hashTarget = normalizePageName(href.slice(1));
-    if (VALID_PAGES.indexOf(hashTarget) >= 0) {
-      e.preventDefault();
-      navigate(hashTarget);
-    }
-  }
-});
-
 window.addEventListener("hashchange", function() {
   navigate(getPageFromLocation(), { skipHash: true });
 });
@@ -464,15 +474,9 @@ var sessionTimerHandle = null;
 /* â”€â”€ PAGE INITS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function initHomePage() {
   var user = getUser();
-  var navCta  = document.getElementById("homePrimaryCta");
-  var heroCta = document.getElementById("homeHeroCta");
-
-  if (user && navCta && heroCta) {
-    navCta.textContent = "Continue";
-    navCta.href = "app.html";
-    heroCta.textContent = "Return to your study space";
-    heroCta.href = "app.html";
-  }
+  // Auto-redirect if already logged in — home page is for new visitors only
+  if (user) { navigate("app"); return; }
+}
 }
 
 function initLoginPage() {
