@@ -656,3 +656,32 @@ input[type="range"] { padding: 0; border: none; background: transparent; box-sha
   .rating-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .metric-grid { grid-template-columns: 1fr; }
 }
+/* Page transitions */
+.page-view {
+  display: none;
+}
+.page-view.active {
+  display: block;
+  animation: pageFadeIn 0.2s ease forwards;
+}
+.page-view.page-leaving {
+  display: block;
+  animation: pageFadeOut 0.16s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pageFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Active nav indicator */
+.site-nav a.nav-active {
+  opacity: 1;
+  font-weight: 600;
+  border-bottom: 1px solid currentColor;
+}
